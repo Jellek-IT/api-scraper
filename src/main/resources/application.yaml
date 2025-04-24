@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: apiscraper
+app:
+  api:
+    url: https://jsonplaceholder.typicode.com/
+  local-storage:
+    path: ./data

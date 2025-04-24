@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'groovy'
+}
+
+group = 'pl.bronikowski'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    // JDK 17 i required by Spring Shell
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    springShellVersion = '3.4.0'
+    jacksonVersion = '2.18.3'
+    springCloudVersion = '2024.0.1'
+    groovyVersion = '4.0.26'
+    spockVersion = '2.4-M6-groovy-4.0'
+    jimfsVersion = '1.3.0'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.shell:spring-shell-dependencies:$springShellVersion"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+}
+
+dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.shell:spring-shell-starter'
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    compileOnly 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.shell:spring-shell-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation "org.apache.groovy:groovy:$groovyVersion"
+    testImplementation "org.spockframework:spock-core:$spockVersion"
+    testImplementation "org.spockframework:spock-spring:$spockVersion"
+    testImplementation 'org.awaitility:awaitility'
+    testImplementation "com.google.jimfs:jimfs:$jimfsVersion"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
